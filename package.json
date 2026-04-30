@@ -1,0 +1,32 @@
+{
+  "name": "paul-flood-heritage-site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "import:csv": "tsx scripts/import-csv.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.7.0",
+    "next": "^15.3.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.17",
+    "@types/react": "^19.0.4",
+    "@types/react-dom": "^19.0.2",
+    "eslint": "^9.26.0",
+    "eslint-config-next": "^15.3.2",
+    "prisma": "^6.7.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.8.3"
+  }
+}

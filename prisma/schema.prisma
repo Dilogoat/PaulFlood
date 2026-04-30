@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum CompetitionType {
+  CUP
+  PLATE
+}
+
+enum SourceConfidence {
+  VERIFIED
+  NEEDS_CONFIRMATION
+  UNVERIFIED
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  DOCUMENT
+}
+
+model Person {
+  id           String   @id @default(cuid())
+  fullName     String
+  roleTitle    String?
+  biography    String?
+  birthYear    Int?
+  deathYear    Int?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Competition {
+  id           String            @id @default(cuid())
+  type         CompetitionType   @unique
+  name         String
+  description  String?
+  winnerRecords WinnerRecord[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model Season {
+  id           String         @id @default(cuid())
+  year         Int            @unique
+  startDate    DateTime?
+  endDate      DateTime?
+  winnerRecords WinnerRecord[]
+  mediaAssets  MediaAsset[]
+  historyEntries ClubHistoryEntry[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model WinnerRecord {
+  id                String           @id @default(cuid())
+  competitionId     String
+  competition       Competition      @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  seasonId          String
+  season            Season           @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  winnerName        String
+  runnerUpName      String?
+  score             String?
+  venue             String?
+  matchDate         DateTime?
+  summary           String?
+  sourceConfidence  SourceConfidence @default(NEEDS_CONFIRMATION)
+  evidenceLinks     EvidenceLink[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@unique([competitionId, seasonId])
+}
+
+model ClubHistoryEntry {
+  id                String           @id @default(cuid())
+  seasonId          String?
+  season            Season?          @relation(fields: [seasonId], references: [id], onDelete: SetNull)
+  title             String
+  eventDate         DateTime?
+  content           String
+  sourceConfidence  SourceConfidence @default(NEEDS_CONFIRMATION)
+  evidenceLinks     EvidenceLink[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+}
+
+model MediaAsset {
+  id                String           @id @default(cuid())
+  title             String
+  description       String?
+  mediaType         MediaType
+  filePath          String
+  sourceUrl         String?
+  credit            String?
+  rights            String?
+  seasonId          String?
+  season            Season?          @relation(fields: [seasonId], references: [id], onDelete: SetNull)
+  captureDate       DateTime?
+  sourceConfidence  SourceConfidence @default(NEEDS_CONFIRMATION)
+  evidenceLinks     EvidenceLink[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+}
+
+model Citation {
+  id            String         @id @default(cuid())
+  title         String
+  publisher     String?
+  author        String?
+  sourceUrl     String?
+  archiveRef    String?
+  publicationDate DateTime?
+  accessDate    DateTime?
+  notes         String?
+  evidenceLinks EvidenceLink[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model EvidenceLink {
+  id               String           @id @default(cuid())
+  citationId       String
+  citation         Citation         @relation(fields: [citationId], references: [id], onDelete: Cascade)
+  winnerRecordId   String?
+  winnerRecord     WinnerRecord?    @relation(fields: [winnerRecordId], references: [id], onDelete: Cascade)
+  historyEntryId   String?
+  historyEntry     ClubHistoryEntry? @relation(fields: [historyEntryId], references: [id], onDelete: Cascade)
+  mediaAssetId     String?
+  mediaAsset       MediaAsset?      @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+  note             String?
+  createdAt        DateTime         @default(now())
+
+  @@index([citationId])
+}
