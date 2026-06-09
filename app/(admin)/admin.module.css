@@ -72,3 +72,141 @@
   gap: 0.75rem;
   margin-top: 1.5rem;
 }
+
+.section {
+  margin: 1rem 1.5rem;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  background: #1f2937;
+}
+
+.sectionSummary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.sectionSummary::-webkit-details-marker {
+  display: none;
+}
+
+.sectionSummary h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.sectionToggle {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.sectionBody {
+  padding: 0 1.25rem 1.25rem;
+  border-top: 1px solid #374151;
+}
+
+.formGrid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-top: 1rem;
+}
+
+.formGrid label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+}
+
+.formGrid input,
+.formGrid select,
+.formGrid textarea {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  background: #0f172a;
+  color: #f8fafc;
+  font: inherit;
+}
+
+.formGrid textarea {
+  resize: vertical;
+}
+
+.formGrid button,
+.formInline button {
+  padding: 0.65rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #f59e0b;
+  color: #111827;
+  font-weight: 600;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.formInline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.formInline label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+}
+
+.formInline input {
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+.uploadBox {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: 1px dashed #4b5563;
+  border-radius: 6px;
+}
+
+.recordList {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.recordCard {
+  padding: 0.75rem;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  background: #111827;
+}
+
+.recordCard h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+}
+
+.recordActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.recordActions button {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid #4b5563;
+  border-radius: 4px;
+  background: #1f2937;
+  color: #fca5a5;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
