@@ -17,12 +17,13 @@ E-Prime scaffold on `main`. The v0 prototype lives on `legacy/v0` (tag `v0-proto
 ## Local setup
 
 1. Copy `.env.example` to `.env`
-2. Start Postgres: `docker compose up -d`
+2. Start Postgres: `docker compose up -d` (requires Docker Desktop)
 3. `npm install`
 4. `npm run db:generate`
-5. `npm run dev`
+5. `npm run db:migrate`
+6. `npm run dev`
 
-Database migrations and auth are tracked in GitHub issues #4 and #5.
+Auth implementation: GitHub issue #5.
 
 ## Preserved from v0
 
