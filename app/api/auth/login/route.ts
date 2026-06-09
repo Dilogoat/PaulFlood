@@ -11,10 +11,7 @@ export async function POST(request: NextRequest) {
   const valid = username === expectedUsername && verifyAdminPassword(password);
 
   if (!valid) {
-    return new NextResponse(null, {
-      status: 303,
-      headers: { Location: "/admin/login?error=invalid" }
-    });
+    return NextResponse.redirect(new URL("/admin/login?error=invalid", request.url), 303);
   }
 
   const session = await getAdminSession();
@@ -22,8 +19,5 @@ export async function POST(request: NextRequest) {
   session.loginAt = Date.now();
   await session.save();
 
-  return new NextResponse(null, {
-    status: 303,
-    headers: { Location: "/admin" }
-  });
+  return NextResponse.redirect(new URL("/admin", request.url), 303);
 }

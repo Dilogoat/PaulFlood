@@ -6,4 +6,11 @@ if (!password) {
   process.exit(1);
 }
 
-console.log(hashAdminPassword(password));
+const hash = hashAdminPassword(password);
+const envValue = hash.replace(/\$/g, "\\$");
+
+console.log("Hash:");
+console.log(hash);
+console.log("");
+console.log("Add to .env (escape $ for Next.js):");
+console.log(`ADMIN_PASSWORD_HASH="${envValue}"`);

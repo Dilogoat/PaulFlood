@@ -14,7 +14,8 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "import:csv": "tsx scripts/import-csv.ts",
-    "hash-password": "tsx scripts/hash-password.ts"
+    "hash-password": "tsx scripts/hash-password.ts",
+    "check-auth": "tsx scripts/check-auth-env.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",
