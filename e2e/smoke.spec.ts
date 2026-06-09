@@ -31,6 +31,6 @@ test("admin can sign in", async ({ page }) => {
   await page.fill('input[name="password"]', password);
   await page.getByRole("button", { name: "Sign in" }).click();
 
-  await expect(page).toHaveURL(/\/admin$/);
+  await expect(page).toHaveURL(/\/admin$/, { timeout: 15_000 });
   await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
 });

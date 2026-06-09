@@ -54,7 +54,11 @@ jobs:
       - name: Set admin password hash
         run: |
           HASH=$(node -e "console.log(require('bcryptjs').hashSync(process.env.E2E_ADMIN_PASSWORD, 12))")
-          echo "ADMIN_PASSWORD_HASH=$HASH" >> "$GITHUB_ENV"
+          {
+            echo "ADMIN_PASSWORD_HASH<<EOF"
+            echo "$HASH"
+            echo "EOF"
+          } >> "$GITHUB_ENV"
 
       - name: Lint
         run: npm run lint
