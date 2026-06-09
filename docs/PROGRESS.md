@@ -39,4 +39,4 @@
 - V1 DoD signed off in `docs/V1_SIGNOFF.md`
 - Favicon: `app/icon.svg`
 - Session cookie `Secure` flag tied to HTTPS site URL (fixes CI e2e login)
-- Release tag: `v1.0.0`
+- Release tags: `v1.0.0`, `v1.0.1` (green CI — auth cookie + localhost fixes)
