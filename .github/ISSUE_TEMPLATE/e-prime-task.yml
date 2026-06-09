@@ -1,0 +1,66 @@
+name: E-Prime Task
+description: Task for the E-Prime rebuild (use bootstrap issues when possible)
+title: "[E-Prime] "
+labels: ["e-prime"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Prefer using issues from the E-Prime bootstrap (`docs/github/issues.json`).
+        For new work, link to `docs/E_PRIME_PLAN.md` and assign an agent label.
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Agent
+      options:
+        - A0 — Orchestrator
+        - A1 — Foundation
+        - A2 — Data
+        - A3 — Public
+        - A4 — Admin
+        - A5 — Quality
+        - A6 — Deploy
+    validations:
+      required: true
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Milestone
+      options:
+        - M0 — Planning
+        - M1 — Foundation
+        - M2 — Data
+        - M3 — Public site
+        - M4 — Admin CMS
+        - M5 — Quality
+        - M6 — Launch
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      placeholder: What needs to be done?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      placeholder: How do we know this is done?
+    validations:
+      required: true
+  - type: input
+    id: depends
+    attributes:
+      label: Depends on (issue numbers)
+      placeholder: e.g. #4, #5
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      placeholder: |
+        - [ ] Task one
+        - [ ] Task two
+    validations:
+      required: true

@@ -1,66 +1,31 @@
-# Paul Flood Heritage Website
+# Paul Flood Heritage Website (E-Prime)
 
-Next.js + Prisma + SQLite website for documenting:
-- Paul Flood's legacy at St. Mary's Rugby Club
-- Paul Flood Cup history and winners
-- Paul Flood Plate history and winners
-- Citation-backed evidence and media archive
+Spec-driven rebuild of the Paul Flood heritage archive.
 
-## Site Outline
-- `/` Home with key stats and entry points
-- `/paul-flood` biographical and club timeline
-- `/awards/cup` Cup history and winners
-- `/awards/plate` Plate history and winners
-- `/winners` unified winners register
-- `/media` photo/media archive
-- `/sources` citation index
-- `/admin` authenticated content management
+## Status
 
-## Core Components
-- App Router pages for public history and archives
-- SQLite-backed Prisma models for winners/history/media/citations
-- Admin dashboard for create, update, delete
-- Evidence links connecting citations to records
-- Source confidence status (`VERIFIED`, `NEEDS_CONFIRMATION`, `UNVERIFIED`)
+E-Prime scaffold on `main`. The v0 prototype lives on `legacy/v0` (tag `v0-prototype`).
 
-## Data Model
-- `Person`
-- `Competition`
-- `Season`
-- `WinnerRecord`
-- `ClubHistoryEntry`
-- `MediaAsset`
-- `Citation`
-- `EvidenceLink`
+## Documentation
 
-## Local Setup
-1. Copy `.env.example` to `.env`.
-2. Set:
-   - `DATABASE_URL="file:./dev.db"`
-   - `ADMIN_USERNAME`
-   - `ADMIN_PASSWORD`
-   - `ADMIN_SESSION_SECRET`
-3. Install dependencies.
-4. Run:
-   - `npm run db:generate`
-   - `npm run db:migrate`
-   - `npm run db:seed`
-   - `npm run dev`
+- **Master plan:** [docs/E_PRIME_PLAN.md](docs/E_PRIME_PLAN.md)
+- **Agent workstreams:** [AGENTS.md](AGENTS.md)
+- **Tech decisions:** [docs/DECISIONS.md](docs/DECISIONS.md)
+- **CSV import format:** [docs/CSV_IMPORT.md](docs/CSV_IMPORT.md)
+- **GitHub issues:** https://github.com/Dilogoat/PaulFlood/issues?q=label%3Ae-prime
 
-## Citation Workflow
-- Add citation records first.
-- Create/update winner/history/media records.
-- Link evidence through admin `Link Citation to Evidence` form.
-- Avoid publishing key claims without citation coverage.
+## Local setup
 
-## Local Hosting
-See `docs/DEPLOY_LOCAL_PROXY.md` for reverse proxy + NO-IP setup.
+1. Copy `.env.example` to `.env`
+2. Start Postgres: `docker compose up -d`
+3. `npm install`
+4. `npm run db:generate`
+5. `npm run dev`
 
-## CSV Bulk Import
-- Place CSV files in `content/import/`.
-- Validate without writing:
-  - `npm run import:csv -- --dry-run`
-- Apply import:
-  - `npm run import:csv`
-- Full format reference:
-  - `docs/CSV_IMPORT.md`
+Database migrations and auth are tracked in GitHub issues #4 and #5.
+
+## Preserved from v0
+
+- Domain model: `prisma/schema.prisma` (PostgreSQL)
+- Research data: `content/import/*.csv`
+- Import script: `scripts/import-csv.ts` (port in progress, issue #7)

@@ -9,9 +9,13 @@
 .env
 .env.local
 
-# prisma
+# prisma (legacy sqlite)
 /prisma/dev.db
 /prisma/dev.db-journal
+
+# uploads
+/storage/uploads/*
+!/storage/uploads/.gitkeep
 
 # misc
 .DS_Store

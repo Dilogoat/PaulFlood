@@ -1,0 +1,201 @@
+{
+  "milestones": [
+    { "title": "M0 - Planning & GitHub setup", "description": "Plan approved, GitHub objects created, legacy branch tagged." },
+    { "title": "M1 - Foundation", "description": "Scaffold, PostgreSQL, Prisma, authentication." },
+    { "title": "M2 - Data", "description": "Query layer, CSV import port, Person data." },
+    { "title": "M3 - Public site", "description": "Design system and all public routes." },
+    { "title": "M4 - Admin CMS", "description": "Admin UI, upload, evidence management." },
+    { "title": "M5 - Quality & security", "description": "Tests, CI, security audit." },
+    { "title": "M6 - Launch", "description": "Media ingest, production import, deploy validation." }
+  ],
+  "labels": [
+    { "name": "agent:orchestrator", "color": "1D76DB", "description": "A0 - Orchestrator" },
+    { "name": "agent:foundation", "color": "0E8A16", "description": "A1 - Foundation" },
+    { "name": "agent:data", "color": "5319E7", "description": "A2 - Data" },
+    { "name": "agent:public", "color": "FBCA04", "description": "A3 - Public site" },
+    { "name": "agent:admin", "color": "D93F0B", "description": "A4 - Admin CMS" },
+    { "name": "agent:quality", "color": "006B75", "description": "A5 - Quality & CI" },
+    { "name": "agent:deploy", "color": "C5DEF5", "description": "A6 - Deploy" },
+    { "name": "type:epic", "color": "3E4B9E", "description": "Coordination / multi-step epic" },
+    { "name": "type:feature", "color": "A2EEEF", "description": "New functionality" },
+    { "name": "type:infra", "color": "BFD4F2", "description": "Infrastructure and tooling" },
+    { "name": "type:design", "color": "E99695", "description": "UI/UX and visual design" },
+    { "name": "type:security", "color": "EE0701", "description": "Security hardening" },
+    { "name": "type:docs", "color": "0075CA", "description": "Documentation" },
+    { "name": "priority:critical", "color": "B60205", "description": "Blocks other work" },
+    { "name": "priority:high", "color": "D93F0B", "description": "V1 required" },
+    { "name": "priority:medium", "color": "FBCA04", "description": "V1 should have" },
+    { "name": "priority:low", "color": "0E8A16", "description": "Nice to have in V1" },
+    { "name": "e-prime", "color": "7057FF", "description": "E-Prime rebuild track" }
+  ],
+  "issues": [
+    {
+      "title": "[E-Prime] #1 Repo bootstrap - legacy branch, tag, and empty scaffold",
+      "milestone": "M0 - Planning & GitHub setup",
+      "labels": ["e-prime", "agent:orchestrator", "type:epic", "priority:critical"],
+      "body": "## Summary\nArchive the v0 prototype and initialize E-prime on `main`.\n\n## Tasks\n- [ ] Tag current `main` as `v0-prototype`\n- [ ] Create `legacy/v0` branch from tagged commit\n- [ ] Reset `main` to minimal Next.js 15 + TypeScript scaffold\n- [ ] Copy `prisma/schema.prisma` (switch to postgresql), `content/`, `docs/CSV_IMPORT.md`, `docs/E_PRIME_PLAN.md`, `AGENTS.md`\n- [ ] Add `legacy/README.md` pointing to `legacy/v0` branch\n- [ ] Verify `npm run build` passes\n\n## Acceptance criteria\n- `legacy/v0` preserves full prototype\n- `main` builds with empty scaffold\n- No feature code beyond copied schema/docs\n\n## Agent\n**A0 - Orchestrator**\n\n## Blocks\nAll other E-prime issues"
+    },
+    {
+      "title": "[E-Prime] #2 Tech decisions - styling, auth library, storage driver",
+      "milestone": "M1 - Foundation",
+      "labels": ["e-prime", "agent:foundation", "type:infra", "priority:critical"],
+      "body": "## Summary\nLock implementation choices before parallel agent work.\n\n## Decisions required\n- [ ] Styling: Tailwind vs CSS Modules (document in `docs/DECISIONS.md`)\n- [ ] Auth: `iron-session` vs Jose-signed cookie\n- [ ] Storage: local filesystem vs S3-compatible for V1\n- [ ] Postgres: Docker Compose local vs hosted (Neon/Supabase)\n\n## Acceptance criteria\n- `docs/DECISIONS.md` committed with rationale\n- `.env.example` reflects choices\n\n## Agent\n**A1 - Foundation**\n\n## Depends on\n#1"
+    },
+    {
+      "title": "[E-Prime] #3 Shared contracts - lib/data interfaces and types",
+      "milestone": "M1 - Foundation",
+      "labels": ["e-prime", "agent:orchestrator", "type:epic", "priority:critical"],
+      "body": "## Summary\nDefine read-layer contracts consumed by Public and Admin agents.\n\n## Tasks\n- [ ] Document function signatures in `lib/data/index.ts` (stubs OK)\n- [ ] Export shared types for Winner, Citation, Person, MediaAsset\n- [ ] Agree revalidation path list for admin mutations\n\n## Acceptance criteria\n- A2, A3, A4 can work in parallel against documented contracts\n- No implementation required beyond stubs\n\n## Agent\n**A0 - Orchestrator** (with A2 review)\n\n## Depends on\n#1"
+    },
+    {
+      "title": "[E-Prime] #4 PostgreSQL + Prisma setup",
+      "milestone": "M1 - Foundation",
+      "labels": ["e-prime", "agent:foundation", "type:infra", "priority:critical"],
+      "body": "## Summary\nConfigure PostgreSQL and run initial Prisma migration from copied schema.\n\n## Tasks\n- [ ] Add `docker-compose.yml` with Postgres service (or document hosted URL)\n- [ ] Update `schema.prisma` datasource to `postgresql`\n- [ ] Run `prisma migrate dev` - initial migration\n- [ ] Add `lib/db/prisma.ts` singleton\n- [ ] Remove SQLite-specific paths from docs\n\n## Acceptance criteria\n- `npx prisma migrate status` clean on fresh clone\n- `npx prisma studio` shows empty tables\n\n## Agent\n**A1 - Foundation**\n\n## Depends on\n#1, #2"
+    },
+    {
+      "title": "[E-Prime] #5 Authentication - login, session, bcrypt",
+      "milestone": "M1 - Foundation",
+      "labels": ["e-prime", "agent:foundation", "type:security", "priority:critical"],
+      "body": "## Summary\nImplement production-grade admin authentication.\n\n## Tasks\n- [ ] bcrypt password verification (store hash in env or DB)\n- [ ] Per-login signed session cookie with expiry\n- [ ] `lib/auth/require-admin.ts` for server actions and routes\n- [ ] `POST /api/auth/login` and `POST /api/auth/logout`\n- [ ] Admin login page at `/admin/login`\n\n## Acceptance criteria\n- Valid login sets cookie; invalid rejected\n- Logout clears session\n- No static env-derived session hash\n\n## Agent\n**A1 - Foundation**\n\n## Depends on\n#2, #4"
+    },
+    {
+      "title": "[E-Prime] #6 Middleware - validate session on all admin paths",
+      "milestone": "M1 - Foundation",
+      "labels": ["e-prime", "agent:foundation", "type:security", "priority:high"],
+      "body": "## Summary\nMiddleware cryptographically validates session, not just cookie presence.\n\n## Tasks\n- [ ] Matcher: `/admin/*`, `/api/admin/*`, `/api/auth/*` (except login)\n- [ ] Reject invalid/expired tokens with redirect to login\n- [ ] Unit tests for token validation helpers\n\n## Acceptance criteria\n- Forged cookie fails at middleware\n- Valid session passes without page-level-only guard\n\n## Agent\n**A1 - Foundation**\n\n## Depends on\n#5"
+    },
+    {
+      "title": "[E-Prime] #7 Port CSV import script + dry-run tests",
+      "milestone": "M2 - Data",
+      "labels": ["e-prime", "agent:data", "type:feature", "priority:critical"],
+      "body": "## Summary\nPort `scripts/import-csv.ts` from legacy/v0 to work with PostgreSQL.\n\n## Tasks\n- [ ] Port script with identical CSV contracts\n- [ ] `npm run import:csv -- --dry-run` works\n- [ ] Vitest: dry-run does not persist rows\n- [ ] Update `docs/CSV_IMPORT.md` if paths change\n\n## Acceptance criteria\n- Import against dev DB populates all entity types\n- Dry-run test passes in CI\n\n## Agent\n**A2 - Data**\n\n## Depends on\n#4"
+    },
+    {
+      "title": "[E-Prime] #8 Implement lib/data query layer",
+      "milestone": "M2 - Data",
+      "labels": ["e-prime", "agent:data", "type:feature", "priority:critical"],
+      "body": "## Summary\nImplement all public read queries from contracts (#3).\n\n## Tasks\n- [ ] `getSiteOverview`, `getAwardPageData`, `getPaulFloodHistory`\n- [ ] `getWinners` with filter params for search\n- [ ] `getMediaAssets`, `getCitations`\n- [ ] `getPerson` for Paul Flood biography\n- [ ] Include evidence links + citations in queries\n\n## Acceptance criteria\n- Queries return correct shapes against imported data\n- Unit tests for at least 3 query functions\n\n## Agent\n**A2 - Data**\n\n## Depends on\n#3, #4, #7"
+    },
+    {
+      "title": "[E-Prime] #9 Person import + Paul Flood biography content",
+      "milestone": "M2 - Data",
+      "labels": ["e-prime", "agent:data", "type:feature", "priority:high"],
+      "body": "## Summary\nActivate the unused Person model with real Paul Flood content.\n\n## Tasks\n- [ ] Add `person.csv` or extend import for Person records\n- [ ] Import Paul Flood biography (research from legacy CSVs / family input)\n- [ ] `getPerson()` returns primary subject record\n\n## Acceptance criteria\n- Person row exists after import\n- Bio content is production-ready (not placeholder)\n\n## Agent\n**A2 - Data**\n\n## Depends on\n#7"
+    },
+    {
+      "title": "[E-Prime] #10 Public design system + layout shell",
+      "milestone": "M3 - Public site",
+      "labels": ["e-prime", "agent:public", "type:design", "priority:critical"],
+      "body": "## Summary\nMemorial-quality public design - not dark admin aesthetic.\n\n## Tasks\n- [ ] `app/(public)/layout.tsx` - public nav, footer\n- [ ] Design tokens: typography, color, spacing\n- [ ] Responsive mobile nav (hamburger)\n- [ ] Shared UI primitives in `components/ui/`\n- [ ] Active route highlighting in nav\n\n## Acceptance criteria\n- Light, readable memorial feel with club imagery support\n- Nav works at 375px width\n\n## Agent\n**A3 - Public**\n\n## Depends on\n#2, #3"
+    },
+    {
+      "title": "[E-Prime] #11 Home page - hero, stats, CTAs",
+      "milestone": "M3 - Public site",
+      "labels": ["e-prime", "agent:public", "type:feature", "priority:high"],
+      "body": "## Summary\nRebuild `/` with photography-led hero and live stats.\n\n## Tasks\n- [ ] Hero with image + intro copy\n- [ ] StatCards from `getSiteOverview()`\n- [ ] Styled CTAs to winners and sources\n- [ ] Page metadata\n\n## Agent\n**A3 - Public**\n\n## Depends on\n#8, #10"
+    },
+    {
+      "title": "[E-Prime] #12 Paul Flood page - bio + timeline",
+      "milestone": "M3 - Public site",
+      "labels": ["e-prime", "agent:public", "type:feature", "priority:high"],
+      "body": "## Summary\n`/paul-flood` combines Person biography with club history timeline.\n\n## Tasks\n- [ ] Person bio section from `getPerson()`\n- [ ] Timeline cards from `getPaulFloodHistory()`\n- [ ] Citation badges link to `/sources` or expand inline\n- [ ] Page metadata\n\n## Agent\n**A3 - Public**\n\n## Depends on\n#8, #9, #10"
+    },
+    {
+      "title": "[E-Prime] #13 Awards pages - Cup and Plate",
+      "milestone": "M3 - Public site",
+      "labels": ["e-prime", "agent:public", "type:feature", "priority:high"],
+      "body": "## Summary\nRebuild `/awards/cup` and `/awards/plate`.\n\n## Tasks\n- [ ] Competition description + winners table\n- [ ] Responsive table wrapper\n- [ ] Citation links per row\n- [ ] Per-page metadata\n\n## Agent\n**A3 - Public**\n\n## Depends on\n#8, #10"
+    },
+    {
+      "title": "[E-Prime] #14 Winners register - search and filter",
+      "milestone": "M3 - Public site",
+      "labels": ["e-prime", "agent:public", "type:feature", "priority:critical"],
+      "body": "## Summary\n`/winners` with working search/filter (copy currently claims searchable).\n\n## Tasks\n- [ ] Filter by season year, award type, winner name, confidence\n- [ ] URL search params for shareable filtered views\n- [ ] Responsive table\n- [ ] Citation links\n\n## Acceptance criteria\n- Filtering works client-side or server-side without full page reload required\n\n## Agent\n**A3 - Public**\n\n## Depends on\n#8, #10"
+    },
+    {
+      "title": "[E-Prime] #15 Media gallery page",
+      "milestone": "M3 - Public site",
+      "labels": ["e-prime", "agent:public", "type:feature", "priority:high"],
+      "body": "## Summary\nRebuild `/media` with responsive image grid.\n\n## Tasks\n- [ ] Grid from `getMediaAssets()`\n- [ ] `next/image` with proper sizing\n- [ ] Credit, rights, season labels\n- [ ] Optional lightbox\n\n## Agent\n**A3 - Public**\n\n## Depends on\n#8, #10"
+    },
+    {
+      "title": "[E-Prime] #16 Sources page + SEO foundations",
+      "milestone": "M3 - Public site",
+      "labels": ["e-prime", "agent:public", "type:feature", "priority:high"],
+      "body": "## Summary\n`/sources` citation index + site-wide SEO.\n\n## Tasks\n- [ ] Citation list with open/copy controls\n- [ ] Linked evidence summary per citation\n- [ ] `app/sitemap.ts`, `public/robots.txt`, favicon\n- [ ] `not-found.tsx`, `error.tsx`\n- [ ] Per-page metadata on all public routes\n\n## Agent\n**A3 - Public**\n\n## Depends on\n#8, #10"
+    },
+    {
+      "title": "[E-Prime] #17 Admin layout shell - separate from public",
+      "milestone": "M4 - Admin CMS",
+      "labels": ["e-prime", "agent:admin", "type:design", "priority:critical"],
+      "body": "## Summary\nAdmin uses its own layout - no public memorial nav.\n\n## Tasks\n- [ ] `app/(admin)/layout.tsx` with admin sidebar/header\n- [ ] Dashboard overview at `/admin`\n- [ ] Logout control\n- [ ] Collapsible sections pattern (componentized)\n\n## Agent\n**A4 - Admin**\n\n## Depends on\n#5, #6"
+    },
+    {
+      "title": "[E-Prime] #18 Admin CRUD - winners and history",
+      "milestone": "M4 - Admin CMS",
+      "labels": ["e-prime", "agent:admin", "type:feature", "priority:high"],
+      "body": "## Summary\nCreate, update, delete winners and club history entries.\n\n## Tasks\n- [ ] Componentized forms (not monolithic page)\n- [ ] `requireAdmin()` on all actions\n- [ ] `revalidatePath` for all affected public routes\n- [ ] Dedicated winner edit form\n\n## Agent\n**A4 - Admin**\n\n## Depends on\n#8, #17"
+    },
+    {
+      "title": "[E-Prime] #19 Admin CRUD - citations and evidence links",
+      "milestone": "M4 - Admin CMS",
+      "labels": ["e-prime", "agent:admin", "type:feature", "priority:high"],
+      "body": "## Summary\nFull citation and evidence link management.\n\n## Tasks\n- [ ] Citation create/update/delete\n- [ ] Evidence link create + list + delete\n- [ ] UI to pick target record (winner/history/media)\n\n## Agent\n**A4 - Admin**\n\n## Depends on\n#17"
+    },
+    {
+      "title": "[E-Prime] #20 Media upload API + admin media CRUD",
+      "milestone": "M4 - Admin CMS",
+      "labels": ["e-prime", "agent:admin", "type:feature", "priority:critical"],
+      "body": "## Summary\nReplace manual file path entry with upload.\n\n## Tasks\n- [ ] `lib/storage` implementation (local or S3 per #2)\n- [ ] `POST /api/admin/media/upload` with type/size validation\n- [ ] Media create/update/delete in admin\n- [ ] Sanitized filenames, no path traversal\n\n## Acceptance criteria\n- Upload image → appears on `/media` after revalidation\n\n## Agent\n**A4 - Admin**\n\n## Depends on\n#2, #17"
+    },
+    {
+      "title": "[E-Prime] #21 Admin CRUD - Person biography",
+      "milestone": "M4 - Admin CMS",
+      "labels": ["e-prime", "agent:admin", "type:feature", "priority:medium"],
+      "body": "## Summary\nAdmin form to edit Paul Flood Person record.\n\n## Tasks\n- [ ] Edit biography, role, years\n- [ ] `revalidatePath('/paul-flood')`\n\n## Agent\n**A4 - Admin**\n\n## Depends on\n#9, #17"
+    },
+    {
+      "title": "[E-Prime] #22 Admin revalidation + cache strategy",
+      "milestone": "M4 - Admin CMS",
+      "labels": ["e-prime", "agent:admin", "type:infra", "priority:high"],
+      "body": "## Summary\nEnsure all admin mutations refresh public pages correctly.\n\n## Tasks\n- [ ] Audit every server action for `revalidatePath` / `revalidateTag`\n- [ ] Set public pages to ISR with agreed TTL\n- [ ] Document cache behavior in `docs/DECISIONS.md`\n\n## Agent\n**A4 - Admin** (with A1 review)\n\n## Depends on\n#18, #19, #20"
+    },
+    {
+      "title": "[E-Prime] #23 CI pipeline - lint, test, build",
+      "milestone": "M5 - Quality & security",
+      "labels": ["e-prime", "agent:quality", "type:infra", "priority:critical"],
+      "body": "## Summary\nGitHub Actions workflow on every PR.\n\n## Tasks\n- [ ] `.github/workflows/ci.yml`\n- [ ] Jobs: eslint, vitest, `next build`\n- [ ] Postgres service container for integration tests\n- [ ] Branch protection rule recommendation in issue comment\n\n## Agent\n**A5 - Quality**\n\n## Depends on\n#1 (can start early)"
+    },
+    {
+      "title": "[E-Prime] #24 Unit tests - auth, validation, import",
+      "milestone": "M5 - Quality & security",
+      "labels": ["e-prime", "agent:quality", "type:feature", "priority:high"],
+      "body": "## Summary\nCore unit test coverage.\n\n## Tasks\n- [ ] Auth helper tests\n- [ ] Zod validation schema tests\n- [ ] Import dry-run tests\n- [ ] At least 3 `lib/data` query tests\n\n## Acceptance criteria\n- ≥10 unit tests passing\n\n## Agent\n**A5 - Quality**\n\n## Depends on\n#5, #7, #8"
+    },
+    {
+      "title": "[E-Prime] #25 E2E smoke tests - login and public pages",
+      "milestone": "M5 - Quality & security",
+      "labels": ["e-prime", "agent:quality", "type:feature", "priority:medium"],
+      "body": "## Summary\nPlaywright smoke tests for critical paths.\n\n## Tasks\n- [ ] Login → admin dashboard\n- [ ] Home, winners, sources render with imported data\n- [ ] Run in CI (optional headed skip)\n\n## Agent\n**A5 - Quality**\n\n## Depends on\n#11, #14, #16, #17"
+    },
+    {
+      "title": "[E-Prime] #26 Security audit - checklist from E_PRIME_PLAN",
+      "milestone": "M5 - Quality & security",
+      "labels": ["e-prime", "agent:quality", "type:security", "priority:high"],
+      "body": "## Summary\nVerify all items in `docs/E_PRIME_PLAN.md` §8 Security Checklist.\n\n## Tasks\n- [ ] Confirm every server action has `requireAdmin()`\n- [ ] Confirm upload validation\n- [ ] Confirm `next/image` remote patterns restricted\n- [ ] Document findings in PR or `docs/SECURITY.md`\n\n## Agent\n**A5 - Quality**\n\n## Depends on\n#6, #20"
+    },
+    {
+      "title": "[E-Prime] #27 Deploy documentation - Postgres, proxy, backups",
+      "milestone": "M6 - Launch",
+      "labels": ["e-prime", "agent:deploy", "type:docs", "priority:high"],
+      "body": "## Summary\nReplace/supersede `docs/DEPLOY_LOCAL_PROXY.md` for E-prime stack.\n\n## Tasks\n- [ ] `docs/DEPLOY.md` - Postgres, app, proxy, NO-IP\n- [ ] Backup: Postgres dump + storage/uploads\n- [ ] Restore drill steps\n- [ ] Env var reference\n\n## Agent\n**A6 - Deploy**\n\n## Depends on\n#4"
+    },
+    {
+      "title": "[E-Prime] #28 Launch - media ingest + production import",
+      "milestone": "M6 - Launch",
+      "labels": ["e-prime", "agent:deploy", "type:epic", "priority:critical"],
+      "body": "## Summary\nFinal launch gate - real content and media live.\n\n## Tasks\n- [ ] Ingest media files referenced in `media_assets.csv`\n- [ ] Run production CSV import\n- [ ] Verify V1 Definition of Done (`docs/E_PRIME_PLAN.md` §2)\n- [ ] Tag release `v1.0.0`\n\n## Acceptance criteria\n- All 11 DoD items checked\n- Site ready for public traffic\n\n## Agent\n**A6 - Deploy** (with all agents)\n\n## Depends on\nAll M3–M5 issues"
+    }
+  ]
+}
