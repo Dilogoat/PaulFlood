@@ -17,6 +17,11 @@
 /storage/uploads/*
 !/storage/uploads/.gitkeep
 
+# testing
+/test-results
+/playwright-report
+/blob-report
+
 # misc
 .DS_Store
 *.log

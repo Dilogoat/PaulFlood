@@ -19,9 +19,22 @@
 - Componentized dashboard sections (winners, history, media, citations, evidence links, person)
 - `POST /api/admin/media/upload` — image upload to `public/uploads/{year}/` (max 5MB, jpeg/png/webp/gif)
 
-### Next up (#23–#28)
+## 2026-06-08 — Quality & deploy docs (issues #23–#27)
 
-- Vitest unit tests for validation and data mappers
-- Playwright smoke tests
-- Security checklist pass
-- Self-hosted deploy + launch
+### Quality (#23–#26)
+
+- Vitest: validation, mappers, auth, CSV parsing, and `lib/data` query tests
+- Playwright smoke tests: public pages + admin login
+- GitHub Actions CI: lint, test, build, e2e (Postgres service container)
+- `docs/SECURITY.md` — checklist audit from E_PRIME_PLAN §8
+- `app/error.tsx` — public error boundary
+
+### Deploy (#27)
+
+- `docs/DEPLOY.md` — Postgres, proxy, backups, restore drill, env reference
+
+### Next up (#28)
+
+- Production media ingest + CSV import on target host
+- V1 Definition of Done sign-off
+- Tag release `v1.0.0`

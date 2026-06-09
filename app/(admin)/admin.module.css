@@ -153,7 +153,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .formInline label {

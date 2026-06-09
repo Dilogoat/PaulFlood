@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-test-build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: paulflood
+          POSTGRES_PASSWORD: paulflood
+          POSTGRES_DB: paulflood
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U paulflood -d paulflood"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://paulflood:paulflood@localhost:5432/paulflood
+      ADMIN_USERNAME: admin
+      E2E_ADMIN_PASSWORD: ci-test-password
+      SESSION_SECRET: ci-session-secret-minimum-32-characters-long
+      NEXT_PUBLIC_SITE_URL: http://127.0.0.1:3000
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.16"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npm run db:generate
+
+      - name: Run migrations
+        run: npx prisma migrate deploy
+
+      - name: Import CSV seed data
+        run: npm run import:csv
+
+      - name: Set admin password hash
+        run: |
+          HASH=$(node -e "console.log(require('bcryptjs').hashSync(process.env.E2E_ADMIN_PASSWORD, 12))")
+          echo "ADMIN_PASSWORD_HASH=$HASH" >> "$GITHUB_ENV"
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit and integration tests
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: E2E smoke tests
+        run: npm run test:e2e
