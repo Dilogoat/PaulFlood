@@ -14,6 +14,25 @@ E-Prime scaffold on `main`. The v0 prototype lives on `legacy/v0` (tag `v0-proto
 - **CSV import format:** [docs/CSV_IMPORT.md](docs/CSV_IMPORT.md)
 - **GitHub issues:** https://github.com/Dilogoat/PaulFlood/issues?q=label%3Ae-prime
 
+## Requirements
+
+- **Node.js** 24.16+ (LTS) — see `.nvmrc`
+- **Docker Desktop** — for local PostgreSQL
+- **npm** 11+
+
+Upgrade Node on Windows:
+
+```powershell
+winget upgrade --id OpenJS.NodeJS.LTS -e
+```
+
+Restart your terminal, then verify:
+
+```powershell
+node --version   # expect v24.16.0 or newer
+npm.cmd --version
+```
+
 ## Local setup
 
 1. Copy `.env.example` to `.env`

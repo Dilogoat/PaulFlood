@@ -13,6 +13,7 @@ Log of locked implementation choices. Update via PR when decisions change.
 | Storage driver | Local filesystem | Locked | 2026-06-08 | Self-hosted deploy; `storage/uploads` behind `lib/storage` |
 | Local Postgres | Docker Compose | Locked | 2026-06-08 | `docker-compose.yml` in repo; hosted Postgres optional for prod |
 | Testing | Vitest + Playwright | Locked | 2026-06-08 | Fast unit tests + smoke E2E (issue #23–#25) |
+| Node.js | 24.16+ LTS | Locked | 2026-06-08 | `.nvmrc` + `package.json` engines; Next.js 15 compatible |
 
 ## Revalidation paths (admin mutations)
 
