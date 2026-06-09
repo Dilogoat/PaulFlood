@@ -1,6 +1,7 @@
+import { getIronSession } from "iron-session";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyAdminPassword } from "@/lib/auth/password";
-import { getAdminSession } from "@/lib/auth/session";
+import { type AdminSession, getAdminSessionOptions } from "@/lib/auth/session";
 
 export async function POST(request: NextRequest) {
   const form = await request.formData();
@@ -14,10 +15,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.redirect(new URL("/admin/login?error=invalid", request.url), 303);
   }
 
-  const session = await getAdminSession();
+  const response = NextResponse.redirect(new URL("/admin", request.url), 303);
+  const session = await getIronSession<AdminSession>(request, response, getAdminSessionOptions());
   session.isLoggedIn = true;
   session.loginAt = Date.now();
   await session.save();
 
-  return NextResponse.redirect(new URL("/admin", request.url), 303);
+  return response;
 }
