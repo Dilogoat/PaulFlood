@@ -37,6 +37,22 @@ function parseArgs(): ImportOptions {
   return { dir, dryRun };
 }
 
+async function loadPersonBiography(importDir: string, rowBiography: string): Promise<string | null> {
+  const biographyPath = path.resolve(importDir, "..", "person", "biography.md");
+  try {
+    const content = await fs.readFile(biographyPath, "utf8");
+    const trimmed = content.trim();
+    if (trimmed) {
+      console.log("Loaded biography from content/person/biography.md");
+      return trimmed;
+    }
+  } catch {
+    /* fall back to CSV column */
+  }
+  const fallback = rowBiography.trim();
+  return fallback || null;
+}
+
 async function readCsvRows(baseDir: string, fileName: string): Promise<CsvRow[]> {
   const fullPath = path.resolve(baseDir, fileName);
   try {
@@ -164,7 +180,7 @@ async function main() {
       const data = {
         fullName,
         roleTitle: (row.role_title ?? "").trim() || null,
-        biography: (row.biography ?? "").trim() || null,
+        biography: await loadPersonBiography(importDir, row.biography ?? ""),
         birthYear: (row.birth_year ?? "").trim()
           ? Number.parseInt((row.birth_year ?? "").trim(), 10)
           : null,

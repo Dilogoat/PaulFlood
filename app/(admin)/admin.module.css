@@ -210,3 +210,37 @@
   cursor: pointer;
   font-size: 0.8rem;
 }
+
+.bioTextarea {
+  min-height: 320px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.bioHelp {
+  margin-top: 0.65rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  background: #111827;
+  font-size: 0.8rem;
+}
+
+.bioHelp summary {
+  cursor: pointer;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.bioHelp ul {
+  margin: 0.5rem 0;
+  padding-left: 1.25rem;
+  color: #94a3b8;
+}
+
+.bioHelp code {
+  color: #fbbf24;
+  font-size: 0.78rem;
+}

@@ -1,5 +1,6 @@
 import { MediaType, SourceConfidence } from "@prisma/client";
 import { AdminSection } from "@/components/admin/AdminSection";
+import { PersonBioField } from "@/components/admin/PersonBioField";
 import { MediaUploadField } from "@/components/admin/MediaUploadField";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db/prisma";
@@ -81,10 +82,7 @@ export default async function AdminDashboardPage() {
             Death year
             <input name="deathYear" type="number" defaultValue={person?.deathYear ?? ""} />
           </label>
-          <label style={{ gridColumn: "1 / -1" }}>
-            Biography
-            <textarea name="biography" rows={5} defaultValue={person?.biography ?? ""} />
-          </label>
+          <PersonBioField defaultValue={person?.biography} />
           <button type="submit">Save profile</button>
         </form>
       </AdminSection>

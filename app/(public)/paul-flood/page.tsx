@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import { BioContent } from "@/components/public/BioContent";
+import { BioImageReel } from "@/components/public/BioImageReel";
 import { CitationBadge } from "@/components/ui/CitationBadge";
 import { ConfidenceBadge } from "@/components/ui/ConfidenceBadge";
+import { PAUL_FLOOD_GALLERY } from "@/lib/content/paul-flood-gallery";
 import styles from "../public.module.css";
 import { getPaulFloodHistory, getPerson } from "@/lib/data";
 
@@ -17,6 +20,7 @@ export default async function PaulFloodPage() {
   return (
     <section className={styles.stack}>
       <div className={styles.hero}>
+        <BioImageReel images={PAUL_FLOOD_GALLERY} />
         <h1>Paul Flood at St. Mary&apos;s Rugby Club</h1>
         <p className={styles.muted}>
           Biography and a timeline of notable events, milestones, and legacy moments.
@@ -32,7 +36,7 @@ export default async function PaulFloodPage() {
               {person.birthYear ?? "?"} — {person.deathYear ?? "present"}
             </p>
           ) : null}
-          {person.biography ? <p className={styles.bio}>{person.biography}</p> : null}
+          {person.biography ? <BioContent biography={person.biography} /> : null}
         </article>
       ) : null}
 
