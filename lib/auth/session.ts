@@ -17,13 +17,19 @@ function sessionSecret(): string {
   return "development-only-secret-minimum-32-chars";
 }
 
+function isSecureCookieEnabled(): boolean {
+  if (process.env.SESSION_COOKIE_SECURE === "true") return true;
+  if (process.env.SESSION_COOKIE_SECURE === "false") return false;
+  return process.env.NEXT_PUBLIC_SITE_URL?.startsWith("https://") ?? false;
+}
+
 export function getAdminSessionOptions(): SessionOptions {
   return {
     password: sessionSecret(),
     cookieName: "pf_admin_session",
     cookieOptions: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: isSecureCookieEnabled(),
       sameSite: "lax",
       path: "/",
       maxAge: 60 * 60 * 8

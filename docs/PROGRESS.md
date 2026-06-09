@@ -33,8 +33,10 @@
 
 - `docs/DEPLOY.md` — Postgres, proxy, backups, restore drill, env reference
 
-### Next up (#28)
+## 2026-06-08 — Launch (#28)
 
-- Production media ingest + CSV import on target host
-- V1 Definition of Done sign-off
-- Tag release `v1.0.0`
+- All `media_assets.csv` images present under `public/uploads/`
+- V1 DoD signed off in `docs/V1_SIGNOFF.md`
+- Favicon: `app/icon.svg`
+- Session cookie `Secure` flag tied to HTTPS site URL (fixes CI e2e login)
+- Release tag: `v1.0.0`

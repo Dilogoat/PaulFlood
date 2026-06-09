@@ -7,6 +7,7 @@ Reference: `docs/E_PRIME_PLAN.md` §8 Security Checklist
 |------|--------|-------|
 | bcrypt password storage | ✅ | `lib/auth/password.ts` compares against `ADMIN_PASSWORD_HASH` |
 | Per-session signed tokens with expiry | ✅ | iron-session with 8h `maxAge` in `lib/auth/session.ts` |
+| Secure cookie only over HTTPS | ✅ | `secure` when `NEXT_PUBLIC_SITE_URL` is `https://` |
 | Middleware validates session | ✅ | `middleware.ts` on `/admin/*` and `/api/admin/*` |
 | Every server action calls `requireAdmin()` | ✅ | All mutations in `app/(admin)/admin/actions.ts` |
 | Admin API routes authenticated | ✅ | Upload route checks `isAdminLoggedIn()` |
