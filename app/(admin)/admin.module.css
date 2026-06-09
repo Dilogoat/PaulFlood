@@ -1,0 +1,74 @@
+.shell {
+  min-height: 100vh;
+  background: #111827;
+  color: #f8fafc;
+  font-family: system-ui, sans-serif;
+}
+
+.header {
+  border-bottom: 1px solid #263147;
+  padding: 1rem 1.5rem;
+}
+
+.panel {
+  width: min(480px, 92vw);
+  margin: 3rem auto;
+  padding: 2rem;
+  background: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+}
+
+.panel h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.muted {
+  color: #94a3b8;
+  margin: 0 0 1.5rem;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.form label {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+}
+
+.form input {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+.button {
+  padding: 0.65rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #f59e0b;
+  color: #111827;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.error {
+  color: #f87171;
+  font-size: 0.875rem;
+}
+
+.dashboard {
+  padding: 2rem 1.5rem;
+}
+
+.dashboardActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}

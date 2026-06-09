@@ -22,6 +22,7 @@ export async function getSiteOverview(): Promise<SiteOverview> {
 
 /** Cup or Plate competition page with ordered winners. */
 export async function getAwardPageData(_type: CompetitionType): Promise<AwardPageData | null> {
+  void _type;
   throw new Error(NOT_IMPLEMENTED);
 }
 
@@ -37,6 +38,7 @@ export async function getPerson(): Promise<PersonProfile | null> {
 
 /** Unified winners register with optional filters for /winners search. */
 export async function getWinners(_filter?: WinnersFilter): Promise<WinnerRecordView[]> {
+  void _filter;
   throw new Error(NOT_IMPLEMENTED);
 }
 
