@@ -143,6 +143,7 @@ async function main() {
   const counters = {
     competitions: 0,
     seasons: 0,
+    persons: 0,
     winners: 0,
     history: 0,
     media: 0,
@@ -202,6 +203,29 @@ async function main() {
       });
       citationKeyToId.set(citationKey, created.id);
       counters.citations += 1;
+    }
+
+    const personRows = await readCsvRows(importDir, "person.csv");
+    for (const row of personRows) {
+      const fullName = requireString(row, "full_name");
+      const data = {
+        fullName,
+        roleTitle: (row.role_title ?? "").trim() || null,
+        biography: (row.biography ?? "").trim() || null,
+        birthYear: (row.birth_year ?? "").trim()
+          ? Number.parseInt((row.birth_year ?? "").trim(), 10)
+          : null,
+        deathYear: (row.death_year ?? "").trim()
+          ? Number.parseInt((row.death_year ?? "").trim(), 10)
+          : null
+      };
+      const existing = await db.person.findFirst({ where: { fullName } });
+      if (existing) {
+        await db.person.update({ where: { id: existing.id }, data });
+      } else {
+        await db.person.create({ data });
+      }
+      counters.persons += 1;
     }
 
     const winnerRows = await readCsvRows(importDir, "winner_records.csv");

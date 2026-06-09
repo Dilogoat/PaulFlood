@@ -45,3 +45,31 @@ p {
   font-size: 0.875rem;
   font-family: system-ui, sans-serif;
 }
+
+.stats {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.stats li {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e7e5e4;
+  border-radius: 8px;
+  background: #fff;
+  font-family: system-ui, sans-serif;
+  font-size: 0.9rem;
+}
+
+.stats strong {
+  display: block;
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+a {
+  color: var(--accent);
+}
