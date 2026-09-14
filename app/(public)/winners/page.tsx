@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CompetitionType, SourceConfidence } from "@prisma/client";
 import { Suspense } from "react";
+import { CompetitionNote } from "@/components/public/CompetitionNote";
 import { WinnersFilter } from "@/components/public/WinnersFilter";
 import { WinnersTable } from "@/components/public/WinnersTable";
 import styles from "../public.module.css";
@@ -45,8 +46,16 @@ export default async function WinnersPage({ searchParams }: { searchParams: Sear
     <section className={styles.stack}>
       <div className={styles.hero}>
         <h1>Winners Register</h1>
-        <p className={styles.muted}>Unified searchable register for Cup and Plate winners by season.</p>
+        <p className={styles.muted}>
+          A searchable register of the Leinster Women&rsquo;s Rugby (union) Paul Flood Cup &amp; Plate,
+          season by season from 2010 to the present.
+        </p>
       </div>
+      <CompetitionNote>
+        This register covers the women&rsquo;s rugby union competition only. A separate 2008 tag rugby
+        event &mdash; the Budweiser Tag All-Ireland Open Paul Flood Memorial Cup &mdash; was also named in
+        Paul&rsquo;s honour and is not listed here.
+      </CompetitionNote>
       <Suspense fallback={null}>
         <WinnersFilter />
       </Suspense>
