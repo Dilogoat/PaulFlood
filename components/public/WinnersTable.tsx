@@ -28,20 +28,22 @@ export function WinnersTable({ records, showAward = true }: WinnersTableProps) {
         <tbody>
           {records.length === 0 ? (
             <tr>
-              <td colSpan={colSpan}>No winner records match your filters.</td>
+              <td className={styles.emptyCell} colSpan={colSpan}>
+                No winner records match your filters.
+              </td>
             </tr>
           ) : (
             records.map((record) => (
               <tr key={record.id}>
-                <td>{record.season.year}</td>
-                {showAward ? <td>{record.competition.name}</td> : null}
-                <td>{record.winnerName}</td>
-                <td>{record.runnerUpName ?? "—"}</td>
-                <td>{record.score ?? "—"}</td>
-                <td>
+                <td data-label="Season">{record.season.year}</td>
+                {showAward ? <td data-label="Award">{record.competition.name}</td> : null}
+                <td data-label="Winner">{record.winnerName}</td>
+                <td data-label="Runner up">{record.runnerUpName ?? "—"}</td>
+                <td data-label="Score">{record.score ?? "—"}</td>
+                <td data-label="Confidence">
                   <ConfidenceBadge value={record.sourceConfidence} />
                 </td>
-                <td>
+                <td data-label="Sources">
                   <CitationBadge citations={record.evidenceLinks.map((link) => link.citation)} />
                 </td>
               </tr>
