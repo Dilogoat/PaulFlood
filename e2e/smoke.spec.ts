@@ -1,9 +1,10 @@
 import { expect, test } from "@playwright/test";
 
-test("home page shows heritage title and stats", async ({ page }) => {
+test("home page shows tribute and stats", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "Paul Flood Heritage" })).toBeVisible();
-  await expect(page.getByText("Winner records")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Paul Flood", exact: true })).toBeVisible();
+  await expect(page.getByText("1955 – 2008")).toBeVisible();
+  await expect(page.getByText("winner records")).toBeVisible();
 });
 
 test("winners register renders", async ({ page }) => {
