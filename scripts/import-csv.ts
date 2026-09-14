@@ -158,19 +158,24 @@ async function main() {
     for (const row of citationsRows) {
       const citationKey = requireString(row, "citation_key");
       const title = requireString(row, "title");
-      const created = await db.citation.create({
-        data: {
-          title,
-          publisher: (row.publisher ?? "").trim() || null,
-          author: (row.author ?? "").trim() || null,
-          sourceUrl: (row.source_url ?? "").trim() || null,
-          archiveRef: (row.archive_ref ?? "").trim() || null,
-          publicationDate: parseDate(row.publication_date ?? ""),
-          accessDate: parseDate(row.access_date ?? ""),
-          notes: (row.notes ?? "").trim() || null,
-        },
-      });
-      citationKeyToId.set(citationKey, created.id);
+      const data = {
+        title,
+        publisher: (row.publisher ?? "").trim() || null,
+        author: (row.author ?? "").trim() || null,
+        sourceUrl: (row.source_url ?? "").trim() || null,
+        archiveRef: (row.archive_ref ?? "").trim() || null,
+        publicationDate: parseDate(row.publication_date ?? ""),
+        accessDate: parseDate(row.access_date ?? ""),
+        notes: (row.notes ?? "").trim() || null,
+      };
+      // Dedupe by title so re-running the import updates the existing
+      // citation instead of creating a duplicate (mirrors the history and
+      // media handling above). Titles are the stable key in citations.csv.
+      const existing = await db.citation.findFirst({ where: { title } });
+      const record = existing
+        ? await db.citation.update({ where: { id: existing.id }, data })
+        : await db.citation.create({ data });
+      citationKeyToId.set(citationKey, record.id);
       counters.citations += 1;
     }
 
